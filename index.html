@@ -868,7 +868,105 @@ img.service-card-img {
   .mobile-menu nav a { font-size: 28px; }
 }
 
-/* TABLET 541–860px: keep grids at 2 columns */
+/* ── SEARCH OVERLAY ── */
+#search-overlay {
+  display: none; position: fixed; inset: 0; z-index: 300;
+  background: rgba(48,37,31,0.55); backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  align-items: flex-start; justify-content: center;
+  padding-top: 120px;
+}
+#search-overlay.open { display: flex; }
+#search-box {
+  background: var(--ivory); width: 100%; max-width: 680px;
+  margin: 0 24px;
+  box-shadow: 0 20px 80px rgba(48,37,31,0.2);
+}
+#search-header {
+  display: flex; align-items: center; gap: 16px;
+  padding: 20px 24px; border-bottom: 1px solid var(--champagne);
+}
+#search-input {
+  flex: 1; border: none; background: transparent; outline: none;
+  font-family: var(--font-serif); font-size: 22px; font-weight: 300;
+  color: var(--espresso); letter-spacing: 0.01em;
+}
+#search-input::placeholder { color: var(--taupe); opacity: 0.6; }
+#search-close {
+  font-size: 24px; color: var(--taupe); cursor: pointer; line-height: 1;
+  padding: 4px; font-weight: 300; opacity: 0.7; flex-shrink: 0;
+  font-family: var(--font-sans);
+  transition: opacity 0.2s;
+}
+#search-close:hover { opacity: 1; }
+#search-results {
+  max-height: 360px; overflow-y: auto;
+  padding: 8px 0;
+}
+#search-results:empty::after {
+  content: 'Begin typing to search…';
+  display: block; padding: 24px;
+  font-size: 13px; color: var(--taupe); font-style: italic;
+  font-family: var(--font-serif);
+}
+.search-result-item {
+  display: flex; align-items: center; gap: 16px;
+  padding: 14px 24px; cursor: pointer;
+  transition: background 0.15s;
+  text-decoration: none; color: inherit;
+}
+.search-result-item:hover { background: var(--cream); }
+.search-result-cat {
+  font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--taupe); min-width: 72px; font-weight: 400;
+}
+.search-result-name {
+  font-family: var(--font-serif); font-size: 17px; font-weight: 300;
+  color: var(--espresso); line-height: 1.25;
+}
+.search-no-results {
+  padding: 24px; font-size: 13px; color: var(--taupe);
+  font-style: italic; font-family: var(--font-serif); text-align: center;
+}
+
+/* ── PROFILE DROPDOWN ── */
+#profile-dropdown {
+  display: none; position: absolute; right: 0; top: calc(100% + 12px);
+  background: var(--ivory); min-width: 220px;
+  box-shadow: 0 12px 48px rgba(48,37,31,0.14);
+  border: 1px solid var(--champagne);
+  z-index: 200;
+}
+#profile-dropdown.open { display: block; }
+.profile-drop-header {
+  padding: 20px 24px 16px;
+  border-bottom: 1px solid var(--champagne);
+}
+.profile-drop-title {
+  font-family: var(--font-serif); font-size: 18px; font-weight: 300;
+  color: var(--espresso); letter-spacing: 0.01em;
+}
+.profile-drop-sub {
+  font-size: 11px; color: var(--taupe); letter-spacing: 0.08em;
+  margin-top: 2px;
+}
+.profile-drop-item {
+  display: block; padding: 13px 24px;
+  font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--mocha); cursor: pointer; font-weight: 400;
+  transition: background 0.15s, color 0.15s;
+  border-bottom: 1px solid rgba(215,197,180,0.35);
+  text-decoration: none;
+}
+.profile-drop-item:last-child { border-bottom: none; }
+.profile-drop-item:hover { background: var(--cream); color: var(--espresso); }
+.profile-drop-item.primary {
+  background: var(--espresso); color: var(--white);
+  transition: background 0.2s;
+}
+.profile-drop-item.primary:hover { background: var(--mocha); }
+
+/* ── TABLET 541–860px: keep grids at 2 columns ── */
 @media (min-width: 541px) and (max-width: 860px) {
   .experiences-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
   .services-grid { grid-template-columns: repeat(2, 1fr); }
@@ -908,10 +1006,10 @@ img.service-card-img {
     <a href="#" class="nav-logo">L<em>u</em>mière</a>
 
     <div class="nav-right">
-      <span class="nav-icon" aria-label="Search">
+      <span class="nav-icon" id="nav-search-btn" aria-label="Search" role="button" tabindex="0">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.3-4.3"/></svg>
       </span>
-      <span class="nav-icon" aria-label="Account">
+      <span class="nav-icon" id="nav-profile-btn" aria-label="Account" role="button" tabindex="0" style="position:relative;">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
       </span>
       <a href="#booking" class="nav-cta">Book an Appointment</a>
@@ -985,7 +1083,7 @@ img.service-card-img {
         <div class="service-card-name">Hair &amp; Styling</div>
         <div class="service-card-desc">Cuts, colour, extensions and bespoke hair treatments crafted for your individual style.</div>
         <div class="service-card-price">
-          <span>From [Price Placeholder]</span>
+          <span>From $65</span>
           <span class="service-card-cta">Explore</span>
         </div>
       </div>
@@ -999,7 +1097,7 @@ img.service-card-img {
         <div class="service-card-name">Skincare &amp; Facials</div>
         <div class="service-card-desc">Personalised skincare rituals, deep cleansing facials and skin rejuvenation experiences.</div>
         <div class="service-card-price">
-          <span>From [Price Placeholder]</span>
+          <span>From $85</span>
           <span class="service-card-cta">Explore</span>
         </div>
       </div>
@@ -1013,7 +1111,7 @@ img.service-card-img {
         <div class="service-card-name">Beauty &amp; Makeup</div>
         <div class="service-card-desc">Professional, bridal and event makeup artistry. Personal beauty consultations included.</div>
         <div class="service-card-price">
-          <span>From [Price Placeholder]</span>
+          <span>From $75</span>
           <span class="service-card-cta">Explore</span>
         </div>
       </div>
@@ -1029,7 +1127,7 @@ img.service-card-img {
         <div class="service-card-name">Nails &amp; Self-Care</div>
         <div class="service-card-desc">Manicure, pedicure and nail treatments. Relaxation rituals to restore and renew.</div>
         <div class="service-card-price">
-          <span>From [Price Placeholder]</span>
+          <span>From $55</span>
           <span class="service-card-cta">Explore</span>
         </div>
       </div>
@@ -1043,7 +1141,7 @@ img.service-card-img {
         <div class="service-card-name">Body &amp; Wellness</div>
         <div class="service-card-desc">Relaxation treatments, body care rituals and personalised wellness consultations.</div>
         <div class="service-card-price">
-          <span>From [Price Placeholder]</span>
+          <span>From $90</span>
           <span class="service-card-cta">Explore</span>
         </div>
       </div>
@@ -1114,8 +1212,8 @@ img.service-card-img {
           <h3 class="exp-name">The Lumière Hair Ritual</h3>
           <p class="exp-desc">A deeply restorative hair experience combining colour, treatment and styling — beginning with a complimentary consultation to identify what your hair truly needs.</p>
           <div class="exp-meta">
-            <div><div class="exp-price">[Price Placeholder]</div></div>
-            <div class="exp-duration">Approx. [Duration]</div>
+            <div><div class="exp-price">$285</div></div>
+            <div class="exp-duration">Approx. 2.5 hours</div>
           </div>
           <a href="#booking" class="exp-book">Reserve This Experience</a>
         </div>
@@ -1127,8 +1225,8 @@ img.service-card-img {
           <h3 class="exp-name">Luminous Skin Experience</h3>
           <p class="exp-desc">An indulgent multi-step facial experience tailored to your skin's unique requirements, designed to restore radiance and deep hydration.</p>
           <div class="exp-meta">
-            <div><div class="exp-price">[Price Placeholder]</div></div>
-            <div class="exp-duration">Approx. [Duration]</div>
+            <div><div class="exp-price">$165</div></div>
+            <div class="exp-duration">Approx. 75 minutes</div>
           </div>
           <a href="#booking" class="exp-book">Reserve This Experience</a>
         </div>
@@ -1140,8 +1238,8 @@ img.service-card-img {
           <h3 class="exp-name">The Wellness Retreat</h3>
           <p class="exp-desc">A complete mind-body experience combining relaxation treatments, body care rituals and a personalised wellness consultation.</p>
           <div class="exp-meta">
-            <div><div class="exp-price">[Price Placeholder]</div></div>
-            <div class="exp-duration">Approx. [Duration]</div>
+            <div><div class="exp-price">$220</div></div>
+            <div class="exp-duration">Approx. 2 hours</div>
           </div>
           <a href="#booking" class="exp-book">Reserve This Experience</a>
         </div>
@@ -1212,7 +1310,7 @@ img.service-card-img {
   <div class="section booking-section" style="margin:0 auto">
     <p class="section-eyebrow reveal">Reservations</p>
     <h2 class="section-title reveal">YOUR BEAUTY EXPERIENCE<br>STARTS HERE.</h2>
-    <p class="section-subtitle reveal">Complete the form below and our team will confirm your appointment within 24 hours. Fields marked with [Placeholder] indicate configurable options.</p>
+    <p class="section-subtitle reveal">Complete the form below and our team will confirm your appointment within 24 hours. Complete the form below and our team will confirm your appointment within 24 hours.</p>
 
     <div class="booking-form reveal">
       <div class="booking-steps">
@@ -1259,9 +1357,9 @@ img.service-card-img {
           <label class="form-label" for="specialist">Preferred Specialist (Optional)</label>
           <select class="form-select" id="specialist" name="specialist">
             <option value="">No preference</option>
-            <option>[Specialist Name Placeholder]</option>
-            <option>[Specialist Name Placeholder]</option>
-            <option>[Specialist Name Placeholder]</option>
+            <option>Sofia Reyes</option>
+            <option>Isabelle Chen</option>
+            <option>Marcus Webb</option>
           </select>
         </div>
         <button class="form-submit" onclick="setStep(2)" type="button">Continue to Date &amp; Time</button>
@@ -1310,7 +1408,7 @@ img.service-card-img {
         </div>
         <div class="form-group">
           <label class="form-label" for="phone">Phone Number</label>
-          <input class="form-input" type="tel" id="phone" name="phone" placeholder="+[Country Code] [Number]">
+          <input class="form-input" type="tel" id="phone" name="phone" placeholder="+1 (323) 740-8821">
         </div>
         <div class="form-group">
           <label class="form-label" for="notes">Additional Notes</label>
@@ -1329,12 +1427,13 @@ img.service-card-img {
     <p class="section-eyebrow reveal">Curated Selection</p>
     <h2 class="section-title reveal">THE BEAUTY EDIT</h2>
     <p class="section-subtitle reveal">Thoughtfully selected beauty and wellness products, available to take home.</p>
+    <p style="font-size:11px;color:var(--taupe);opacity:0.6;text-align:center;margin-top:-8px;margin-bottom:0;letter-spacing:0.08em;">Product showcase — purchasing not available in this demo</p>
     <div class="shop-grid">
       <div class="shop-card reveal">
         <img class="shop-card-img-ph" src="https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?w=600&q=80&fit=crop" alt="Restorative Hair Oil" loading="lazy" style="object-fit:cover;">
         <div class="shop-card-body">
           <div class="shop-card-name">Restorative Hair Oil</div>
-          <div class="shop-card-price">[Price Placeholder]</div>
+          <div class="shop-card-price">$68</div>
           <span class="shop-card-btn">Add to Bag</span>
         </div>
       </div>
@@ -1342,23 +1441,23 @@ img.service-card-img {
         <img class="shop-card-img-ph" src="https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=600&q=80&fit=crop" alt="Luminous Skin Serum" loading="lazy" style="object-fit:cover;">
         <div class="shop-card-body">
           <div class="shop-card-name">Luminous Skin Serum</div>
-          <div class="shop-card-price">[Price Placeholder]</div>
+          <div class="shop-card-price">$95</div>
           <span class="shop-card-btn">Add to Bag</span>
         </div>
       </div>
       <div class="shop-card reveal reveal-delay-2">
-        <img class="shop-card-img-ph" src="https://images.unsplash.com/photo-1556228578-626b1b5c8b80?w=600&q=80&fit=crop" alt="Velvet Moisture Cream" loading="lazy" style="object-fit:cover;">
+        <img class="shop-card-img-ph" src="https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=600&q=80&fit=crop" alt="Velvet Moisture Cream" loading="lazy" style="object-fit:cover;">
         <div class="shop-card-body">
           <div class="shop-card-name">Velvet Moisture Cream</div>
-          <div class="shop-card-price">[Price Placeholder]</div>
+          <div class="shop-card-price">$52</div>
           <span class="shop-card-btn">Add to Bag</span>
         </div>
       </div>
       <div class="shop-card reveal reveal-delay-3">
-        <img class="shop-card-img-ph" src="https://images.unsplash.com/photo-1602874801006-10b55bdf9d9e?w=600&q=80&fit=crop" alt="Aromatherapy Candle" loading="lazy" style="object-fit:cover;">
+        <img class="shop-card-img-ph" src="https://images.unsplash.com/photo-1636401583898-b3300c7e3ef0?w=600&q=80&fit=crop" alt="Aromatherapy Candle" loading="lazy" style="object-fit:cover;">
         <div class="shop-card-body">
           <div class="shop-card-name">Aromatherapy Candle</div>
-          <div class="shop-card-price">[Price Placeholder]</div>
+          <div class="shop-card-price">$42</div>
           <span class="shop-card-btn">Add to Bag</span>
         </div>
       </div>
@@ -1375,22 +1474,22 @@ img.service-card-img {
       <div class="testimonial-card reveal">
         <span class="testimonial-mark">"</span>
         <div class="stars">★★★★★</div>
-        <p class="testimonial-text">[Placeholder testimonial: Replace with an authentic client review. Clients loved the warm, attentive atmosphere and the exceptional quality of their treatment.]</p>
-        <div class="testimonial-name">[Client Name]</div>
+        <p class="testimonial-text">"I came in for the Lumière Hair Ritual and left feeling completely transformed. Sofia took her time understanding exactly what I wanted — the result was beyond what I imagined. The studio itself is so calm and beautiful."</p>
+        <div class="testimonial-name">Natalie R.</div>
         <div class="testimonial-service">Hair Ritual Experience</div>
       </div>
       <div class="testimonial-card reveal reveal-delay-1">
         <span class="testimonial-mark">"</span>
         <div class="stars">★★★★★</div>
-        <p class="testimonial-text">[Placeholder testimonial: Replace with an authentic client review. This is where you share what your clients genuinely say about their Lumière experience.]</p>
-        <div class="testimonial-name">[Client Name]</div>
+        <p class="testimonial-text">"The Luminous Skin Facial was genuinely one of the best treatments I've ever had. My skin was glowing for days. The team is professional, warm and completely attentive. I've already booked my next visit."</p>
+        <div class="testimonial-name">Jessica M.</div>
         <div class="testimonial-service">Luminous Skin Facial</div>
       </div>
       <div class="testimonial-card reveal reveal-delay-2">
         <span class="testimonial-mark">"</span>
         <div class="stars">★★★★★</div>
-        <p class="testimonial-text">[Placeholder testimonial: Replace with an authentic client review. Add genuine reviews from real clients to build trust and communicate your studio's unique value.]</p>
-        <div class="testimonial-name">[Client Name]</div>
+        <p class="testimonial-text">"I booked the Wellness Retreat as a birthday gift to myself and I cannot recommend it enough. Every detail was thoughtful and luxurious — from the consultation to the final treatment. I left feeling like a completely new person."</p>
+        <div class="testimonial-name">Priya A.</div>
         <div class="testimonial-service">Wellness Retreat</div>
       </div>
     </div>
@@ -1402,7 +1501,7 @@ img.service-card-img {
   <div class="section">
     <p class="section-eyebrow reveal">Instagram</p>
     <h2 class="section-title reveal">FOLLOW OUR WORLD OF BEAUTY</h2>
-    <p class="section-subtitle reveal">@[yourstudiohandle] — Share your Lumière experience.</p>
+    <p class="section-subtitle reveal">@lumierestudiola — Share your Lumière experience.</p>
     <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:4px;margin-top:48px" class="reveal">
       <!-- Social grid placeholders -->
       <img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=400&q=80&fit=crop" style="width:100%;aspect-ratio:1;object-fit:cover;display:block;" alt="Lumière beauty" loading="lazy">
@@ -1425,21 +1524,21 @@ img.service-card-img {
       <h2 class="contact-info-title reveal">Get in<br><em style="font-style:italic">Touch</em></h2>
       <div class="contact-detail reveal">
         <div class="contact-detail-label">Studio Address</div>
-        <div class="contact-detail-value">[Street Address Placeholder]<br>[City, Postcode / ZIP Placeholder]</div>
+        <div class="contact-detail-value">248 Magnolia Lane<br>West Hollywood, CA 90046</div>
       </div>
       <div class="contact-detail reveal">
         <div class="contact-detail-label">Phone</div>
-        <div class="contact-detail-value"><a href="tel:+00000000000">[+Phone Number Placeholder]</a></div>
+        <div class="contact-detail-value"><a href="tel:+13237408821">+1 (323) 740-8821</a></div>
       </div>
       <div class="contact-detail reveal">
         <div class="contact-detail-label">Email</div>
-        <div class="contact-detail-value"><a href="mailto:hello@lumiere.studio">hello@[yourstudio.com]</a></div>
+        <div class="contact-detail-value"><a href="mailto:hello@lumierestudio.com">hello@lumierestudio.com</a></div>
       </div>
       <div class="contact-detail reveal">
         <div class="contact-detail-label">Studio Hours</div>
         <div class="contact-detail-value">
-          Monday – Saturday: [Hours Placeholder]<br>
-          Sunday: [Hours or Closed]
+          Monday – Saturday: 9:00 AM – 7:00 PM<br>
+          Sunday: Sunday: 10:00 AM – 5:00 PM
         </div>
       </div>
       <div class="footer-social-links reveal" style="margin-top:16px">
@@ -1515,8 +1614,8 @@ img.service-card-img {
         <li><a href="#">Instagram</a></li>
         <li><a href="#">TikTok</a></li>
         <li><a href="#">Pinterest</a></li>
-        <li><a href="#">[Address Placeholder]</a></li>
-        <li><a href="tel:+00000000000">[Phone Placeholder]</a></li>
+        <li><a href="#">248 Magnolia Lane, West Hollywood, CA 90046</a></li>
+        <li><a href="tel:+13237408821">+1 (323) 740-8821</a></li>
       </ul>
     </div>
   </div>
@@ -1616,31 +1715,31 @@ const modalData = {
     tag: 'Hair & Styling', title: 'Hair & Styling',
     desc: 'From precision cuts and bespoke colour to restorative hair treatments and extensions — our hair services are tailored to your individual style, texture and goal. Each appointment begins with a consultation to understand what your hair needs and what you envision.',
     includes: ['Complimentary hair consultation', 'Personalised treatment recommendation', 'Professional styling products', 'Post-service care guidance'],
-    price: '[From Price Placeholder]', duration: '[Duration Placeholder]'
+    price: 'From $65', duration: '45 min'
   },
   skin: {
     tag: 'Skincare & Facials', title: 'Skincare & Facials',
     desc: 'Our skincare experiences are designed around your skin, not a template. Using carefully selected formulations, our specialists create a facial experience tailored to your skin type, concerns and goals — from deep cleansing to intensive hydration and rejuvenation.',
     includes: ['Skin analysis and consultation', 'Personalised treatment protocol', 'Product application and guidance', 'Take-home skincare recommendations'],
-    price: '[From Price Placeholder]', duration: '[Duration Placeholder]'
+    price: 'From $65', duration: '45 min'
   },
   makeup: {
     tag: 'Beauty & Makeup', title: 'Beauty & Makeup',
     desc: 'Professional makeup artistry for every occasion. Whether you are preparing for a special event, your wedding day, or a personal beauty consultation, our artists work with your features to create a look that is entirely and beautifully yours.',
     includes: ['Pre-appointment consultation', 'Professional product application', 'Trial session option for bridal', 'Touch-up product guidance'],
-    price: '[From Price Placeholder]', duration: '[Duration Placeholder]'
+    price: 'From $65', duration: '45 min'
   },
   nails: {
     tag: 'Nails & Self-Care', title: 'Nails & Self-Care',
     desc: 'Beautifully finished nails, mindful relaxation and thoughtful self-care treatments. Our nail experiences combine skill and calm — from classic manicures and pedicures to restorative nail treatments and relaxation rituals.',
     includes: ['Nail health assessment', 'Cuticle care and treatment', 'Chosen polish or finish application', 'Relaxation ritual included'],
-    price: '[From Price Placeholder]', duration: '[Duration Placeholder]'
+    price: 'From $65', duration: '45 min'
   },
   body: {
     tag: 'Body & Wellness', title: 'Body & Wellness',
     desc: 'Restorative body care and wellness experiences designed to relieve tension, nourish the skin and restore a sense of balance. Our wellness consultants will design a session that responds to what your body and mind need most.',
     includes: ['Wellness consultation', 'Personalised treatment selection', 'Premium body care formulations', 'Post-treatment wellness guidance'],
-    price: '[From Price Placeholder]', duration: '[Duration Placeholder]'
+    price: 'From $65', duration: '45 min'
   }
 };
 function openModal(key) {
@@ -1690,7 +1789,8 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal()
 
 <style>
 /* ---- CMS ADMIN BUTTON ---- */
-#cms-toggle {
+#cms-toggle { display: none !important; }
+#cms-toggle-HIDDEN {
   position: fixed; bottom: 88px; right: 32px; z-index: 9000;
   background: var(--espresso); color: var(--ivory);
   padding: 12px 20px; font-family: var(--font-sans);
@@ -1961,7 +2061,7 @@ function getDefaults() {
       name: 'Lumière',
       tagline: 'Luxury Beauty & Wellness Studio',
       announce: 'EXPERIENCE LUXURY BEAUTY | COMPLIMENTARY CONSULTATION WITH EVERY FIRST BOOKING',
-      instagram: '@yourstudiohandle',
+      instagram: '@lumierestudiola',
       tiktok: '#',
       pinterest: '#',
       seoTitle: 'Lumière — Luxury Beauty & Wellness Studio',
@@ -1976,34 +2076,34 @@ function getDefaults() {
       cta2: 'Book Your Experience'
     },
     services: [
-      { key:'hair',   name:'Hair & Styling',   tag:'Premium',  price:'From [Price]', duration:'[Duration]', desc:'Cuts, colour, extensions and bespoke hair treatments crafted for your individual style.' },
-      { key:'skin',   name:'Skincare & Facials',tag:'Advanced', price:'From [Price]', duration:'[Duration]', desc:'Personalised skincare rituals, deep cleansing facials and skin rejuvenation experiences.' },
-      { key:'makeup', name:'Beauty & Makeup',   tag:'Artistry', price:'From [Price]', duration:'[Duration]', desc:'Professional, bridal and event makeup artistry. Personal beauty consultations included.' },
-      { key:'nails',  name:'Nails & Self-Care', tag:'Self-Care',price:'From [Price]', duration:'[Duration]', desc:'Manicure, pedicure and nail treatments. Relaxation rituals to restore and renew.' },
-      { key:'body',   name:'Body & Wellness',   tag:'Holistic', price:'From [Price]', duration:'[Duration]', desc:'Relaxation treatments, body care rituals and personalised wellness consultations.' }
+      { key:'hair',   name:'Hair & Styling',   tag:'Premium',  price:'From $65', duration:'45–90 min', desc:'Cuts, colour, extensions and bespoke hair treatments crafted for your individual style.' },
+      { key:'skin',   name:'Skincare & Facials',tag:'Advanced', price:'From $85', duration:'60 min', desc:'Personalised skincare rituals, deep cleansing facials and skin rejuvenation experiences.' },
+      { key:'makeup', name:'Beauty & Makeup',   tag:'Artistry', price:'From $75', duration:'60 min', desc:'Professional, bridal and event makeup artistry. Personal beauty consultations included.' },
+      { key:'nails',  name:'Nails & Self-Care', tag:'Self-Care',price:'From $55', duration:'45 min', desc:'Manicure, pedicure and nail treatments. Relaxation rituals to restore and renew.' },
+      { key:'body',   name:'Body & Wellness',   tag:'Holistic', price:'From $90', duration:'75 min', desc:'Relaxation treatments, body care rituals and personalised wellness consultations.' }
     ],
     experiences: [
-      { name:'The Lumière Hair Ritual', tag:'Hair', price:'[Price]', duration:'Approx. [Duration]', desc:'A deeply restorative hair experience combining colour, treatment and styling — beginning with a complimentary consultation to identify what your hair truly needs.' },
-      { name:'Luminous Skin Experience', tag:'Skincare', price:'[Price]', duration:'Approx. [Duration]', desc:'An indulgent multi-step facial experience tailored to your skin\'s unique requirements, designed to restore radiance and deep hydration.' },
-      { name:'The Wellness Retreat', tag:'Wellness', price:'[Price]', duration:'Approx. [Duration]', desc:'A complete mind-body experience combining relaxation treatments, body care rituals and a personalised wellness consultation.' }
+      { name:'The Lumière Hair Ritual', tag:'Hair', price:'$285', duration:'Approx. 2.5 hours', desc:'A deeply restorative hair experience combining colour, treatment and styling — beginning with a complimentary consultation to identify what your hair truly needs.' },
+      { name:'Luminous Skin Experience', tag:'Skincare', price:'$165', duration:'Approx. 75 minutes', desc:'An indulgent multi-step facial experience tailored to your skin\'s unique requirements, designed to restore radiance and deep hydration.' },
+      { name:'The Wellness Retreat', tag:'Wellness', price:'$220', duration:'Approx. 2 hours', desc:'A complete mind-body experience combining relaxation treatments, body care rituals and a personalised wellness consultation.' }
     ],
     products: [
-      { name:'Restorative Hair Oil', price:'[Price]' },
-      { name:'Luminous Skin Serum', price:'[Price]' },
-      { name:'Velvet Moisture Cream', price:'[Price]' },
-      { name:'Aromatherapy Candle', price:'[Price]' }
+      { name:'Restorative Hair Oil', price:'$68' },
+      { name:'Luminous Skin Serum', price:'$95' },
+      { name:'Velvet Moisture Cream', price:'$52' },
+      { name:'Aromatherapy Candle', price:'$42' }
     ],
     gallery: [
       { label:'Reception' }, { label:'Products' }, { label:'Styling Studio' },
       { label:'Treatment Room' }, { label:'Nail Studio' }, { label:'Wellness Lounge' }
     ],
     contact: {
-      address: '[Street Address Placeholder]',
-      city: '[City, Postcode / ZIP Placeholder]',
-      phone: '[+Phone Number Placeholder]',
-      email: 'hello@[yourstudio.com]',
-      hoursWeek: '[Hours Placeholder]',
-      hoursSun: '[Hours or Closed]',
+      address: '248 Magnolia Lane',
+      city: 'West Hollywood, CA 90046',
+      phone: '+1 (323) 740-8821',
+      email: 'hello@lumierestudio.com',
+      hoursWeek: '9:00 AM – 7:00 PM',
+      hoursSun: 'Sunday: 10:00 AM – 5:00 PM',
       mapEmbed: ''
     }
   };
@@ -2685,6 +2785,150 @@ wireUpPage();
 applyToPage(data, imgs);
 
 })(); // end IIFE
+</script>
+
+<!-- SEARCH OVERLAY -->
+<div id="search-overlay" role="dialog" aria-modal="true" aria-label="Search">
+  <div id="search-box">
+    <div id="search-header">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="color:var(--taupe);flex-shrink:0;"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.3-4.3"/></svg>
+      <input id="search-input" type="text" placeholder="Search services, treatments, products…" autocomplete="off" aria-label="Search">
+      <button id="search-close" aria-label="Close search">×</button>
+    </div>
+    <div id="search-results" role="listbox" aria-label="Search results"></div>
+  </div>
+</div>
+
+<!-- PROFILE DROPDOWN (appended into profileBtn by JS) -->
+<div id="profile-dropdown" role="menu" aria-label="Account menu">
+  <div class="profile-drop-header">
+    <div class="profile-drop-title">My Account</div>
+    <div class="profile-drop-sub">Lumière Beauty &amp; Wellness</div>
+  </div>
+  <a href="#booking" class="profile-drop-item primary">Sign In</a>
+  <a href="#booking" class="profile-drop-item">Create Account</a>
+  <a href="#booking" class="profile-drop-item">My Appointments</a>
+  <a href="#shop" class="profile-drop-item">My Orders</a>
+</div>
+
+<script>
+/* ================================================================
+   SEARCH FUNCTIONALITY
+   ================================================================ */
+(function() {
+  var searchData = [
+    { cat: 'Service', name: 'Hair & Styling', href: '#services' },
+    { cat: 'Service', name: 'Skincare & Facials', href: '#services' },
+    { cat: 'Service', name: 'Makeup Artistry', href: '#services' },
+    { cat: 'Service', name: 'Nail Care', href: '#services' },
+    { cat: 'Service', name: 'Body Treatments', href: '#services' },
+    { cat: 'Treatment', name: 'Lumière Hair Ritual', href: '#experiences' },
+    { cat: 'Treatment', name: 'Radiance Facial', href: '#experiences' },
+    { cat: 'Treatment', name: 'Mindful Body Wrap', href: '#experiences' },
+    { cat: 'Wellness', name: 'Meditation & Mindfulness', href: '#wellness' },
+    { cat: 'Wellness', name: 'Sound Bath Therapy', href: '#wellness' },
+    { cat: 'Wellness', name: 'Breathwork Sessions', href: '#wellness' },
+    { cat: 'Wellness', name: 'Reiki Healing', href: '#wellness' },
+    { cat: 'Wellness', name: 'Yoga & Movement', href: '#wellness' },
+    { cat: 'Product', name: 'Restorative Hair Oil', href: '#shop' },
+    { cat: 'Product', name: 'Luminous Skin Serum', href: '#shop' },
+    { cat: 'Product', name: 'Velvet Moisture Cream', href: '#shop' },
+    { cat: 'Product', name: 'Aromatherapy Candle', href: '#shop' },
+    { cat: 'Info', name: 'Book an Appointment', href: '#booking' },
+    { cat: 'Info', name: 'About Lumière', href: '#about' },
+    { cat: 'Info', name: 'Contact Us', href: '#contact' },
+    { cat: 'Info', name: 'Gallery', href: '#gallery' }
+  ];
+
+  var overlay = document.getElementById('search-overlay');
+  var input = document.getElementById('search-input');
+  var results = document.getElementById('search-results');
+  var closeBtn = document.getElementById('search-close');
+  var searchBtn = document.getElementById('nav-search-btn');
+
+  function openSearch() {
+    overlay.classList.add('open');
+    setTimeout(function() { input.focus(); }, 60);
+    renderResults('');
+  }
+  function closeSearch() {
+    overlay.classList.remove('open');
+    input.value = '';
+    results.innerHTML = '';
+  }
+  function renderResults(q) {
+    var trimmed = q.trim().toLowerCase();
+    results.innerHTML = '';
+    if (!trimmed) return;
+    var matched = searchData.filter(function(item) {
+      return item.name.toLowerCase().indexOf(trimmed) !== -1 ||
+             item.cat.toLowerCase().indexOf(trimmed) !== -1;
+    });
+    if (matched.length === 0) {
+      var noRes = document.createElement('div');
+      noRes.className = 'search-no-results';
+      noRes.textContent = 'No results for \u201c' + q.trim() + '\u201d';
+      results.appendChild(noRes);
+      return;
+    }
+    matched.forEach(function(item) {
+      var a = document.createElement('a');
+      a.className = 'search-result-item';
+      a.href = item.href;
+      a.setAttribute('role', 'option');
+      a.innerHTML = '<span class="search-result-cat">' + item.cat + '</span>' +
+                    '<span class="search-result-name">' + item.name + '</span>';
+      a.addEventListener('click', function() { closeSearch(); });
+      results.appendChild(a);
+    });
+  }
+
+  if (searchBtn) {
+    searchBtn.addEventListener('click', openSearch);
+    searchBtn.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openSearch(); }
+    });
+  }
+  if (closeBtn) closeBtn.addEventListener('click', closeSearch);
+  if (overlay) overlay.addEventListener('click', function(e) { if (e.target === overlay) closeSearch(); });
+  if (input) input.addEventListener('input', function() { renderResults(this.value); });
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && overlay && overlay.classList.contains('open')) closeSearch();
+  });
+})();
+
+/* ================================================================
+   PROFILE DROPDOWN FUNCTIONALITY
+   ================================================================ */
+(function() {
+  var profileBtn = document.getElementById('nav-profile-btn');
+  var dropdown = document.getElementById('profile-dropdown');
+  if (!profileBtn || !dropdown) return;
+
+  profileBtn.style.position = 'relative';
+  profileBtn.appendChild(dropdown);
+
+  function openProfile() { dropdown.classList.add('open'); }
+  function closeProfile() { dropdown.classList.remove('open'); }
+  function toggleProfile(e) {
+    e.stopPropagation();
+    dropdown.classList.contains('open') ? closeProfile() : openProfile();
+  }
+
+  profileBtn.addEventListener('click', toggleProfile);
+  profileBtn.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleProfile(e); }
+  });
+  document.addEventListener('click', function(e) {
+    if (!profileBtn.contains(e.target)) closeProfile();
+  });
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeProfile();
+  });
+  dropdown.querySelectorAll('.profile-drop-item').forEach(function(item) {
+    item.addEventListener('click', function() { closeProfile(); });
+  });
+})();
 </script>
 </body>
 </html>
